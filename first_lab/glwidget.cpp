@@ -37,11 +37,11 @@ void GLWidget::draw(float x, float y, GLenum type) {
     int n = 8;
     glPointSize(2);
     glBegin(type);
-        glColor3f(0,1,1);
         for (int i = 0; i < n; i++) {
             float angle = 2 * 3.14 * i / (n);
             float x_ = (( -0.2 + cos(angle) * 0.8 + x));
             float y_ = (( -0.1 + sin(angle) * 0.8 + y));
+            glColor3f((float)1/i,(float)2/i,(float)3/i);
             glVertex2f(x_, y_);
         }
     glEnd();
