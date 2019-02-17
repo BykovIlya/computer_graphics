@@ -11,9 +11,7 @@ public:
     GLWidget(QWidget *parent = 0);
     ~GLWidget();
     void initializeGL();
-    //void resizeGL(int w, int h);
     void paintGL() override;
-    void paintFigure(int);
     void draw(float, float, GLenum);
 };
 
