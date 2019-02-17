@@ -65,10 +65,8 @@ int num = 0;
 
 void MainWindow::on_pushButton_2_clicked()
 {
-    bool ok;
-    //ui->openGLWidget->paintFigure(mapOfFigures().find(ui->comboBox->currentText())->second);
-    ++num;
     ui->openGLWidget->update();
-    ui->label_3->setText(QString::fromStdString(arrOfFigures[num]));
+    ++num;
     if (num == 10) num = 0;
+    ui->label_3->setText(QString::fromStdString(arrOfFigures[num]));
 }

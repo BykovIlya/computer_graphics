@@ -14,6 +14,7 @@ public:
     //void resizeGL(int w, int h);
     void paintGL() override;
     void paintFigure(int);
+    void draw(float, float, GLenum);
 };
 
 #endif // GLWIDGET_H

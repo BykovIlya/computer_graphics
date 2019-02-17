@@ -15,8 +15,6 @@ class MainWindow : public QMainWindow
 public:
   explicit MainWindow(QWidget *parent = 0);
   std::map< const QString, int> mapOfFigures();
-  int figure();
-  int name();
   ~MainWindow();
   int a[5];
 private slots:

@@ -27,9 +27,24 @@ void GLWidget::initializeGL() {
 
 void GLWidget::paintGL() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    paintFigure(flag);
+    draw(0.1, 0.1, arrOfFigures[flag]);
     flag++;
     if (flag == 10) flag = 0;
+
+}
+
+void GLWidget::draw(float x, float y, GLenum type) {
+    int n = 8;
+    glPointSize(2);
+    glBegin(type);
+        glColor3f(0,1,1);
+        for (int i = 0; i < n; i++) {
+            float angle = 2 * 3.14 * i / (n);
+            float x_ = (( -0.2 + cos(angle) * 0.8 + x));
+            float y_ = (( -0.1 + sin(angle) * 0.8 + y));
+            glVertex2f(x_, y_);
+        }
+    glEnd();
 }
 
 void GLWidget::paintFigure(int name) {
