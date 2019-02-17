@@ -33,7 +33,6 @@ std::map< const QString, int > MainWindow::mapOfFigures() {
 }
 
 std::vector<std::string> arrOfFigures = {"GL_POINT","GL_LINES","GL_LINE_STRIP","GL_LINE_LOOP","GL_TRIANGLES","GL_TRIANGLE_STRIP","GL_TRIANGLE_FAN","GL_QUADS","GL_QUAD_STRIP","GL_POLYGON"};
-//QString arrOfFigures2 = {"GL_POINT","GL_LINES","GL_LINE_STRIP","GL_LINE_LOOP","GL_TRIANGLES","GL_TRIANGLE_STRIP","GL_TRIANGLE_FAN","GL_QUADS","GL_QUAD_STRIP","GL_POLYGON"};
 
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -48,7 +47,6 @@ MainWindow::MainWindow(QWidget *parent) :
     /*for (std::string i : arrOfFigures) {
         ui->comboBox->addItem(QString::fromStdString(i));
     }*/
-   // ui->openGLWidget->paintGL(mapOfFigures.find(ui->comboBox->currentText())->second);
     ui->label_3->setText(QString::fromStdString(arrOfFigures[0]));
 }
 
@@ -63,21 +61,6 @@ void MainWindow::on_pushButton_clicked()
      QApplication::exit();
 }
 
-int MainWindow::figure(){
-   // return  mapOfFigures().find(ui->comboBox->currentText())->second;
-    //return static_cast<int>(ui->comboBox->currentText());
-    int a;
-    bool ok;
-    //a = (ui->comboBox->currentText()).toInt(&ok, 1);
-    return a;
-}
-
-/*void MainWindow::on_comboBox_activated()
-{
-    ui->openGLWidget->paintGL();
-}
-*/
-
 int num = 0;
 
 void MainWindow::on_pushButton_2_clicked()
@@ -88,14 +71,4 @@ void MainWindow::on_pushButton_2_clicked()
     ui->openGLWidget->update();
     ui->label_3->setText(QString::fromStdString(arrOfFigures[num]));
     if (num == 10) num = 0;
-    //  ui->openGLWidget->paintEvent();
- //   QMessageBox::information(this, "ho-ho", QString::number(mapOfFigures().find(ui->comboBox->currentText())->second));
-}
-
-int MainWindow::name() {
-  //  return mapOfFigures().find(ui->comboBox->currentText())->second;
-    int a;
-    bool ok;
-   // a = (ui->comboBox->currentText()).toInt(&ok, 1);
-    return a;
 }
