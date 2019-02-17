@@ -2,6 +2,8 @@
 ## Лабораторные работы по компьютерной графике. Быков, Спас, 6383
 
 ## Работа с гитхаб:
+  `git clone https://github.com/BykovIlya/computer_graphics.git`
+  
   `git pull origin master`
   
   `git add .`
