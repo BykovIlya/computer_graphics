@@ -3,8 +3,11 @@
 
 ## Работа с гитхаб:
   `git pull origin master`
+  
   `git add .`
+  
   `git commit -m "smth"`
+  
   `git push origin master`
   
 
