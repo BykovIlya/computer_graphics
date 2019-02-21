@@ -16,7 +16,6 @@ public:
   explicit MainWindow(QWidget *parent = 0);
   std::map< const QString, int> mapOfFigures();
   ~MainWindow();
-  int a[5];
 private slots:
     void on_pushButton_clicked();
   //  void on_comboBox_activated();
