@@ -14,13 +14,22 @@ class MainWindow : public QMainWindow
 
 public:
   explicit MainWindow(QWidget *parent = 0);
-  std::map< const QString, int> mapOfFigures();
   ~MainWindow();
+
+protected slots:
+  void testAll(int);
+  void turnAlphaTest();
+  void turnBlendTest();
+  void turnScissorTest();
+
+  void dispOpacity(int);
+  void dispX(int);
+  void dispY(int);
+  void dispW(int);
+  void dispH(int);
+
 private slots:
     void on_pushButton_clicked();
-  //  void on_comboBox_activated();
-
-    void on_pushButton_2_clicked();
 
 public:
   Ui::MainWindow *ui;

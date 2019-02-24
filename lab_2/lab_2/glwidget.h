@@ -13,28 +13,34 @@ public:
     ~GLWidget();
     void initializeGL();
     void paintGL() override;
-    void draw(float, float, GLenum);
+    void draw(float, float, int);
+    void opacityTest();
+    void blendTest();
+    void scissorTest();
+    void start();
 
+    int filter = 0;
     int indexOfFigure;
     int alphaTestIndex;
-    int alphaTestValue;
+    double alphaTestValue = -1;
     int blendTestIndexBegin;
     int blendTestIndexEnd;
-    int scissorTestX;
-    int scissorTestY;
-    int scissorTestW;
-    int scissorTestH;
+    double scissorTestX = 0;
+    double scissorTestY = 0;
+    double scissorTestW = 550;
+    double scissorTestH = 450;
 
 public slots:
+    void setFilter(int);
     void setFigure(int);
     void setAlphaIndex(int);
-    void setAlphaValue(int);
+    void setAlphaValue(double);
     void setBlendBegin(int);
     void setBlendEnd(int);
-    void setX(int);
-    void setY(int);
-    void setW(int);
-    void setH(int);
+    void setX(double);
+    void setY(double);
+    void setW(double);
+    void setH(double);
 
 };
 
