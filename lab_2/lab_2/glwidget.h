@@ -21,10 +21,10 @@ public:
 
     int filter = 0;
     int indexOfFigure;
-    int alphaTestIndex;
-    double alphaTestValue = -1;
-    int blendTestIndexBegin;
-    int blendTestIndexEnd;
+    int alphaTestIndex = 0;
+    double alphaTestValue = 0;
+    int blendTestIndexBegin = 0;
+    int blendTestIndexEnd = 0;
     double scissorTestX = 0;
     double scissorTestY = 0;
     double scissorTestW = 550;

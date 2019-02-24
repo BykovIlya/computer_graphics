@@ -74,8 +74,8 @@ void GLWidget::draw(float x, float y, int ind) {
     if (ind == arrOfFigures.size() - 1) {
         GLfloat theta;
         GLfloat pi     = acos(-1.0);
-        GLfloat radius = 0.4f; // радиус
-        GLfloat step   = 1.0f; // чем больше шаг тем хуже диск
+        GLfloat radius = 0.4f;
+        GLfloat step   = 1.0f;
 
         glBegin(GL_TRIANGLE_FAN);
         for(GLfloat a = 0.0f; a < 360.0f; a += step) {
