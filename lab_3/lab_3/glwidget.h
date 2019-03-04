@@ -8,7 +8,8 @@
 struct Point {
     double x;
     double y;
-    Point(double, double);
+    bool f;
+    Point(double, double, bool);
     double len(Point);
     void operator = (const Point &);
 };

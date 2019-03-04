@@ -1,6 +1,6 @@
 #ifndef GLWIDGET_H
 #define GLWIDGET_H
-#include <GL/freeglut.h>
+//#include <GL/freeglut.h>
 #include <QWidget>
 #include <QOpenGLWidget>
 #include <QOpenGLFunctions>
