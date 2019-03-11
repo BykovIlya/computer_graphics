@@ -40,7 +40,6 @@ void drawDot(int x, int y) {
 
 void drawLine(Point P1, Point P2) {
     glBegin(GL_LINES);
-    glColor3f(1,0,0);
     glVertex2f(P1.x, P1.y);
     glVertex2f(P2.x, P2.y);
     glEnd();
@@ -103,12 +102,16 @@ void myMouse(int button, int state, int x, int y) {
         points++;
         drawDot(x, SCREEN_HEIGHT - y);
 
-        if (points >= 4)
+        if (points >= 4 /* == 7*/)
          {
             std::vector < Point > arr = CatmullRomChain(base);
             for (size_t i = 0; i < arr.size() - 1; i++) {
+                glColor3f(0, 0, 1);
                 drawLine(arr[i], arr[i + 1]);
             }
+            /*arr.clear();   // <---несколько сплайнов на листе
+            base.clear();
+            points = 0;*/
         }
     }
 }
