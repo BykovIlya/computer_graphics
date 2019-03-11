@@ -6,11 +6,13 @@
 #include <cmath>
 
 struct Point {
-    double x;
-    double y;
+    GLfloat x;
+    GLfloat y;
     bool f;
-    Point(double, double, bool);
-    double len(Point);
+    Point();
+    Point(GLfloat, GLfloat, bool);
+    GLfloat len(Point);
+    Point centerOfInscribedCircle(Point, Point, Point, GLfloat, GLfloat, GLfloat);
     void operator = (const Point &);
 };
 
@@ -23,7 +25,8 @@ public:
     void initializeGL();
     void paintGL() override;
     int deg = 1;
-    std::vector < Point > drawFractal(Point, Point, Point, int, std::vector < Point >, int flag);
+    std::vector < Point > drawFractal(Point, Point, Point, int, std::vector < Point >, int , int);
+    void drawBridge(Point, Point, Point, Point, int);
 public slots:
     void setDeg(int);
 };
