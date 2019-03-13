@@ -5,6 +5,7 @@
 
 #include <GL/gl.h>
 #include <GL/glu.h>
+#include <QDebug>
 #include <GL/glut.h>
 #include "point.h"
 
@@ -21,6 +22,11 @@ Point operator + (const Point &lPoint, const Point &rPoint) {
     return(Point(lPoint.x + rPoint.x, lPoint.y + rPoint.y));
 }
 
+std::ostream&  operator << (std::ostream& s, const Point &p) {
+    s << "( " << p.x << " ; " << p.y << " )\n";
+    return s;
+}
+
 void myInit() {
     glClearColor(1.0, 1.0, 1.0, 0.0);
     glColor3f(0.0, 0.0, 0.0);
@@ -32,6 +38,7 @@ void myInit() {
 }
 
 void drawDot(int x, int y) {
+    glColor3f(1, 0, 0);
     glBegin(GL_POINTS);
     glVertex2i(x, y);
     glEnd();
@@ -39,6 +46,7 @@ void drawDot(int x, int y) {
 }
 
 void drawLine(Point P1, Point P2) {
+    glColor3f(0, 0, 1);
     glBegin(GL_LINES);
     glVertex2f(P1.x, P1.y);
     glVertex2f(P2.x, P2.y);
@@ -53,6 +61,31 @@ void drawControlLine(Point P1, Point P2) {
     glVertex2f(P2.x, P2.y);
     glEnd();
     glFlush();
+}
+
+void drawParabol(Point P1, Point P2, Point P3, bool flag, bool flag2) {
+
+    float a = ((P3.y-P1.y)*(P2.x-P1.x)-(P2.y-P1.y)*(P3.x-P1.x)) / ((P3.x*P3.x - P1.x * P1.x)*
+                                                                   (P2.x-P1.x) - (P2.x*P2.x - P1.x * P1.x)*(P3.x-P1.x));
+    float b = (P2.y-P1.y-a*(P2.x*P2.x - P1.x * P1.x))/(P2.x - P1.x);
+    float c = P1.y - (a * P1.x*P1.x + b * P1.x);
+
+    glBegin(GL_LINE_STRIP);
+    if (flag == false) {
+        glColor3f(1,1,1);
+    } else {
+        glColor3f(0,1,0);
+    }
+    if (flag2 == false) {
+        for (GLfloat x = std::min(P1.x, P2.x); x < std::max(P1.x,P2.x); x+= 0.001) {
+            glVertex2f(x, a * x * x + b * x + c);
+        }
+    } else {
+        for (GLfloat x = std::min(P3.x, P2.x); x < std::max(P3.x,P2.x); x+= 0.001) {
+            glVertex2f(x, a * x * x + b * x + c);
+        }
+    }
+    glEnd();
 }
 
 float tj(float ti, Point Pi, Point Pj) {
@@ -101,12 +134,13 @@ void myMouse(int button, int state, int x, int y) {
         base.push_back(Point((float)x, (float)(SCREEN_HEIGHT - y)));
         points++;
         drawDot(x, SCREEN_HEIGHT - y);
-
         if (points >= 4 /* == 7*/)
          {
+            drawParabol(base[0], base[1], base[2], true, false);
+            drawParabol(base[base.size() - 4], base[base.size() - 3], base[base.size()-2], false, true);
+            drawParabol(base[base.size() - 3], base[base.size() - 2], base[base.size() - 1], true, true);
             std::vector < Point > arr = CatmullRomChain(base);
             for (size_t i = 0; i < arr.size() - 1; i++) {
-                glColor3f(0, 0, 1);
                 drawLine(arr[i], arr[i + 1]);
             }
             /*arr.clear();   // <---несколько сплайнов на листе

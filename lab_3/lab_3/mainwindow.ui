@@ -37,7 +37,7 @@
      <number>1</number>
     </property>
     <property name="maximum">
-     <number>7</number>
+     <number>100</number>
     </property>
     <property name="orientation">
      <enum>Qt::Vertical</enum>
