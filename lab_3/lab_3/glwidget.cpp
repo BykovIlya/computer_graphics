@@ -6,8 +6,9 @@
 Point::Point() {
     this->x = 0.0;
     this->y = 0.0L;
-    this->f = 0.0L;
+    this->f = false;
 }
+
 Point::Point(GLfloat x, GLfloat y, bool f) {
     this->x = x;
     this->y = y;
@@ -45,45 +46,90 @@ const double precision = 0.000001;
 
 void GLWidget::paintGL() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    Point A(-0.9000, -0.9000 ,0);        // прямой угол
-    Point B(-0.9000,  0.100 ,0);        // угол 60 градусов
-    Point C(-0.9 + A.len(B) * sqrt(3.0),  -0.9000,0);        // угол 30 градусов
+    Point A(-0.9000, -0.4000 ,0);        // прямой угол
+    Point B(-0.9000,  0.50 ,0);        // угол 60 градусов
+    Point C(-0.9 + A.len(B) * sqrt(3.0),  -0.4000,0);        // угол 30 градусов
     std::vector < Point > points;
-    points = drawFractal(A, B, C, deg, points, 0, 0);
+    points = drawFractal(A, B, C, deg, points);
+    std::vector < Point > redPoints;
+    std::vector < Point > greenPoints;
 
-    //points = drawFractal(A, B, C, deg, points, 0, 0);
-   /* for (int i = 0; i < deg; i++) {
-        glBegin(GL_POINTS);
-            glColor3f(1,1,1);
-            glVertex2f(points[i].x, points[i].y);
-        glEnd();
-    }*/
-
-    for (int k = 0; k < pow(3, deg - 1); k++) {
-        //glBegin(GL_LINES);
-        for (size_t i  = k * points.size()/ (pow(3, deg - 1));
-             i < (k+1) * points.size()/ (pow(3, deg - 1)) - 1; i++) {
-          //  glColor3f(1,1,1);
-            //    glVertex2f(points[i].x, points[i].y);
-            //    glVertex2f(points[i + 1].x, points[i + 1].y);
-                if ((i+1) == ((k+1) * points.size()/ (pow(3, deg - 1)) - 1)) {
-                   /* glVertex2f(points[i+1].x, points[i+1].y);
-                    glVertex2f(points[i + ((k+1) * points.size()/ (pow(3, deg - 1)) - 1)].x,
-                            points[i + ((k+1) * points.size()/ (pow(3, deg - 1)) - 1)].y);*/
-                    glBegin(GL_POINTS);
-                    glColor3f(1,0,0);
-                    glVertex2f(points[i+1].x, points[i+1].y);
-                    glEnd();
-                }
-                if (i == k * points.size()/ (pow(3, deg - 1))) {
-                    glBegin(GL_POINTS);
-                    glColor3f(0,1,0);
-                    glVertex2f(points[i].x, points[i].y);
-                    //glVertex2f(points[i + k * points.size()/ (pow(3, deg - 1))].x, points[i + k * points.size()/ (pow(3, deg - 1))].y);
-                    glEnd();
-                }
+    for (size_t k = 0; k < pow(3, deg - 1); k++) {
+        for (size_t i = k * points.size() / (pow(3, deg - 1));
+             i < (k + 1) * points.size() / (pow(3, deg - 1)) - 1; i++) {
+             glBegin(GL_LINES);
+                glColor3f(1, 1, 1);
+                glVertex2f(points[i].x, points[i].y);
+                glVertex2f(points[i + 1].x, points[i + 1].y);
+            glEnd();
+            if ((i + 1) == ((k + 1) * points.size() / (pow(3, deg - 1)) - 1)) {
+                redPoints.push_back(points[i + 1]);
+            }
+            if (i == k * points.size()/ (pow(3, deg - 1))) {
+                greenPoints.push_back(points[i]);
+            }
         }
-     //   glEnd();
+    }
+    if (deg >= 3) {
+        for (size_t i = 9 * 1 - 1; i < points.size() - 9; i += 9 * 3) {
+           glBegin(GL_LINES);
+               glColor3f(1, 1, 1);
+               glVertex2f(points[i].x, points[i].y);
+               glVertex2f(points[i + 9].x, points[i + 9].y);
+               glVertex2f(points[i + 1].x, points[i + 1].y);
+               glVertex2f(points[i + 10].x, points[i + 10].y);
+           glEnd();
+        }
+    }
+    if (deg >= 4) {
+        for (size_t d = 4; d <= deg; d++) {
+            for (size_t i = (int)pow(3, d - 1) - 1; i < points.size() - (int)pow(3, d - 1) + 1; i += (int)pow(3, d)) {
+                glBegin(GL_LINES);
+                    glColor3f(1, 1, 1);
+                    glVertex2f(points[i].x, points[i].y);
+                    glVertex2f(points[i + (int)pow(3, d - 1)].x, points[i + (int)pow(3, d - 1)].y);
+                    glVertex2f(points[i + 1].x, points[i + 1].y);
+                    glVertex2f(points[i + (int)pow(3, d - 1) + 1].x, points[i + (int)pow(3, d - 1) + 1].y);
+                glEnd();
+            }
+        }
+    }
+
+    if (deg == 2) {
+        glBegin(GL_LINES);
+            glVertex2f(greenPoints[1].x, greenPoints[1].y);
+            glVertex2f(greenPoints[2].x, greenPoints[2].y);
+            glVertex2f(redPoints[0].x, redPoints[0].y);
+            glVertex2f(redPoints[1].x, redPoints[1].y);
+        glEnd();
+    } else {
+        for (size_t i = 1; i < greenPoints.size() - 1; i++) {
+            if (i % 2 != 0) {
+                glBegin(GL_LINES);
+                   glVertex2f(greenPoints[i].x, greenPoints[i].y);
+                   glVertex2f(greenPoints[i + 1].x, greenPoints[i + 1].y);
+                   if (i < greenPoints.size() - 4) {
+                        glVertex2f(greenPoints[i + 3].x, greenPoints[i + 3].y);
+                        glVertex2f(greenPoints[i + 4].x, greenPoints[i + 4].y);
+                   }
+                glEnd();
+                i+=4;
+            }
+        }
+
+        for (size_t i = 0; i < redPoints.size() - 1; i++) {
+            if (i % 2 == 0) {
+                glBegin(GL_LINES);
+                    glVertex2f(redPoints[i].x, redPoints[i].y);
+                    glVertex2f(redPoints[i + 1].x, redPoints[i + 1].y);
+                    if (i < redPoints.size() - 5) {
+                        glVertex2f(redPoints[i + 3].x, redPoints[i + 3].y);
+                        glVertex2f(redPoints[i + 4].x, redPoints[i + 4].y);
+                    }
+                glEnd();
+                i+=4;
+            }
+        }
     }
 }
 
@@ -92,12 +138,8 @@ void GLWidget::setDeg(int par) {
     update();
 }
 
-GLfloat big(GLfloat len);
-GLfloat small(GLfloat len);
-
 std::vector < Point > GLWidget::drawFractal(Point A, Point B, Point C, int deg,
-                                            std::vector<Point> points, int flag, int flag_2) {
-
+                                            std::vector<Point> points) {
 
     Point A_1(A.x, A.y, 0);
     Point B_1((0.5 * C.x + A.x) / 1.5, (0.5 * C.y + A.y) / 1.5, 0);
@@ -119,9 +161,9 @@ std::vector < Point > GLWidget::drawFractal(Point A, Point B, Point C, int deg,
     GLfloat BC_2 = B_2.len(C_2);
     GLfloat AC_2 = A_2.len(C_2);
 
-    GLfloat AB_3 = A_2.len(B_3);
-    GLfloat BC_3 = B_2.len(C_3);
-    GLfloat AC_3 = A_2.len(C_3);
+    GLfloat AB_3 = A_3.len(B_3);
+    GLfloat BC_3 = B_3.len(C_3);
+    GLfloat AC_3 = A_3.len(C_3);
 
     Point O_1;
     O_1.centerOfInscribedCircle(A_1, B_1, C_1, AB_1, BC_1, AC_1);
@@ -130,15 +172,12 @@ std::vector < Point > GLWidget::drawFractal(Point A, Point B, Point C, int deg,
     Point O_3;
     O_3.centerOfInscribedCircle(A_3, B_3, C_3, AB_3, BC_3, AC_3);
 
-
     glBegin(GL_LINE_LOOP);
         glColor3f(0,0,1);
         glVertex2f(A.x, A.y);
         glVertex2f(B.x, B.y);
         glVertex2f(C.x, C.y);
     glEnd();
-
-
 
     glBegin(GL_LINE_LOOP);
         glColor3f(0,0,1);
@@ -147,22 +186,12 @@ std::vector < Point > GLWidget::drawFractal(Point A, Point B, Point C, int deg,
         glVertex2f((C.x + B.x) / 2.0, (C.y + B.y) / 2.0);
     glEnd();
 
-
     if (deg > 1) {
-        points = drawFractal(A_1, B_1, C_1, deg-1, points, 0, 0);
-        points = drawFractal(A_2, B_2, C_2, deg-1, points, 1, 0);
-        points = drawFractal(A_3, B_3, C_3, deg-1, points, 2, 0);
+        points = drawFractal(A_1, B_1, C_1, deg-1, points);
+        points = drawFractal(A_2, B_2, C_2, deg-1, points);
+        points = drawFractal(A_3, B_3, C_3, deg-1, points);
      }
     if (deg == 1) {
-     /*   glBegin(GL_POINTS);
-            glColor3f(1,1,1);
-            glVertex2f(O_2.x, O_2.y);
-            glVertex2f(O_1.x, O_1.y);
-            glVertex2f(O_2.x, O_2.y);
-            glVertex2f(O_3.x, O_3.y);
-        glEnd();
-*/
-
         points.push_back(O_1);
         points.push_back(O_2);
         points.push_back(O_3);
@@ -171,21 +200,3 @@ std::vector < Point > GLWidget::drawFractal(Point A, Point B, Point C, int deg,
     return points ;
 }
 
-void GLWidget::drawBridge(Point l, Point lc, Point rc, Point r, int flag) {
-    glBegin(GL_LINES);
-        glColor3f(1,1,1);
-        glVertex2f(l.x, l.y);
-        glVertex2f(rc.x, rc.y);
-        glVertex2f(lc.x, lc.y);
-        glVertex2f(r.x, r.y);
-    glEnd();
-}
-
-
-GLfloat big(GLfloat len) {
-    return std::sqrt(3) * len / 2;
-}
-
-GLfloat small(GLfloat len) {
-    return len / 2;
-}

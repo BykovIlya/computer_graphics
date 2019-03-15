@@ -25,8 +25,7 @@ public:
     void initializeGL();
     void paintGL() override;
     int deg = 1;
-    std::vector < Point > drawFractal(Point, Point, Point, int, std::vector < Point >, int , int);
-    void drawBridge(Point, Point, Point, Point, int);
+    std::vector < Point > drawFractal(Point, Point, Point, int, std::vector < Point >);
 public slots:
     void setDeg(int);
 };
